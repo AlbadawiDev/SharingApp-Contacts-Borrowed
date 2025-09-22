@@ -9,12 +9,15 @@ app/build/
 captures/
 .externalNativeBuild/
 .cxx/
+
 # OS
 .DS_Store
 Thumbs.db
+
 # Keystores / credenciales
 *.jks
 *.keystore
-# Videos y binarios grandes
+
+# Binarios pesados
 *.mp4
 *.apk
