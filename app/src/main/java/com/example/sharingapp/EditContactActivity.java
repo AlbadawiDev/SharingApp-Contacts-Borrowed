@@ -71,7 +71,7 @@ public class EditContactActivity extends AppCompatActivity {
             email.setError("Empty field!");
             return;
         }
-        if (email_str.indexOf('@') == -1) {
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email_str).matches()) {
             email.setError("Must be an email address!");
             return;
         }
