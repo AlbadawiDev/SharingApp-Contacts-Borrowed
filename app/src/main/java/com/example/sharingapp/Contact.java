@@ -59,7 +59,15 @@ public class Contact implements Serializable {
 
     @Override
     public int hashCode() {
-        return username == null ? 0 : username.toLowerCase().hashCode();
+        if (username == null) return 0;
+        // Match equalsIgnoreCase's Unicode folding, independent of device locale.
+        StringBuilder folded = new StringBuilder();
+        for (int offset = 0; offset < username.length(); ) {
+            int point = username.codePointAt(offset);
+            folded.appendCodePoint(Character.toLowerCase(Character.toUpperCase(point)));
+            offset += Character.charCount(point);
+        }
+        return folded.toString().hashCode();
     }
 
     public JSONObject toJson() throws JSONException {

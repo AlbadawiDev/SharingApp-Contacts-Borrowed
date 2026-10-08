@@ -81,7 +81,8 @@ public class ContactList {
     public int size() { return contacts.size(); }
 
     public boolean isUsernameAvailable(String username) {
-        if (username == null) return false;
+        if (username == null || username.trim().isEmpty()) return false;
+        username = username.trim();
         for (int i = 0; i < contacts.size(); i++) {
             Contact c = contacts.get(i);
             if (username.equalsIgnoreCase(c.getUsername())) return false;

@@ -19,15 +19,15 @@ import java.util.ArrayList;
  */
 public class ItemList {
 
-    private static ArrayList<Item> items;
+    private static ArrayList<Item> items = new ArrayList<Item>();
     private String FILENAME = "items.sav";
 
     public ItemList() {
-        items = new ArrayList<Item>();
+        // Activities share this list; constructing another wrapper must not erase it.
     }
 
     public void setItems(ArrayList<Item> item_list) {
-        items = item_list;
+        items = item_list == null ? new ArrayList<Item>() : new ArrayList<Item>(item_list);
     }
 
     public ArrayList<Item> getItems() {

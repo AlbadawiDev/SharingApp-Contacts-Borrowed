@@ -31,8 +31,8 @@ public class AddContactActivity extends AppCompatActivity {
 
     public void saveContact(View view) {
 
-        String username_str = username.getText().toString();
-        String email_str = email.getText().toString();
+        String username_str = username.getText().toString().trim();
+        String email_str = email.getText().toString().trim();
 
         if (username_str.equals("")) {
             username.setError("Empty field!");
@@ -44,7 +44,7 @@ public class AddContactActivity extends AppCompatActivity {
             return;
         }
 
-        if (!email_str.contains("@")){
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email_str).matches()){
             email.setError("Must be an email address!");
             return;
         }
@@ -56,7 +56,10 @@ public class AddContactActivity extends AppCompatActivity {
 
         Contact contact = new Contact(username_str, email_str, null);
 
-        contact_list.addContact(contact);
+        if (!contact_list.addContact(contact)) {
+            username.setError("Username already taken!");
+            return;
+        }
         contact_list.saveContacts(context);
 
         // End AddContactActivity
