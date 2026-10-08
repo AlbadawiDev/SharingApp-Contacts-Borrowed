@@ -26,6 +26,19 @@ APK debug: `app/build/outputs/apk/debug/app-debug.apk`. Compilación y seis prue
 
 Doce checks del modelo con Java y el jar SDK26 comprueban trim, duplicados, nombres vacíos, identidad/hash bajo locale turco y colecciones hash. No acceden a contactos del dispositivo.
 
+## Verificación continua de modelos
+
+GitHub Actions usa JDK 11 y un `android.jar` ya instalado en el runner. No instala SDKs ni acepta licencias Android. `tests-offline/Verify.py` descarga primero tres dependencias fijas de Maven Central y comprueba sus SHA256; la fase de verificación funciona sin red:
+
+```powershell
+python tests-offline/Verify.py --prepare-dependencies --prepare-only
+python tests-offline/Verify.py
+```
+
+Requiere `java`/`javac` en PATH y `ANDROID_HOME` apuntando a un SDK existente, o `--android-jar ruta/al/android.jar`. Selecciona la plataforma numérica instalada más alta para compilar cinco modelos con Java 8, ejecutar las seis JUnit y los doce checks del modelo, y parsear los XML de recursos/manifiesto. Las dependencias se guardan en `build/offline-ci`, ignorado por Git. Los resultados quedan en `build/offline-ci/results.json`.
+
+Este CI comprueba modelos en JVM y sintaxis XML. La compilación APK con SDK26 permanece como validación local documentada arriba; el CI no valida llamadas Android, persistencia real, interfaz, instrumentación ni compatibilidad del APK con plataformas modernas.
+
 ## Correcciones verificadas
 
 - Un nuevo `ItemList` ya no borra los objetos compartidos entre actividades; copiar una lista de entrada protege de cambios del llamador.
